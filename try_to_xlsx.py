@@ -139,10 +139,10 @@ for x in range (1, 10):
     for i in range(50):
         U = traff_period[i] * ver_conv[i]
 
-        if U * cost_click[i] < click_value:
-            cost_click[i] = cost_click[i] + cost_click[i]*0.2
+        if U * cpc[i] < click_value:
+            cost_click[i] = cost_click[i] + cost_click[i]*0.1
         else:
-            cost_click[i] = cost_click[i] - cost_click[i]*0.2
+            cost_click[i] = cost_click[i] - cost_click[i]*0.1
             
             
 
