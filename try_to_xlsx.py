@@ -9,6 +9,9 @@ ws = wb.active
 #количество траифка по позициям
 traffic = [1, 0.85, 0.75, 0.65, 0.06, 0.05, 0.04, 0.03, 0.02]
 
+#ценность клика
+click_value = 35
+
 #задаем вероятности конверсий и количетсво трафика ключам
 ver_conv = [0]*50
 amount_traff = [0]*50
@@ -17,13 +20,16 @@ for i in range(49):
     amount_traff[i] = random.randint(1, 100)
     
 cost_click = [20]*50 #массив ставок по ключам. начальная ставка 20 руб.
-base_cost_click = 20 #контрольная фиксированная ставка для всех ключей - 20 руб
+base_cost_click = 30 #контрольная фиксированная ставка для всех ключей - 20 руб
 cost_pos = [[0]*9 for i in range(50)] #массив стоимости позиций
 all_count_conv = 0
 
 for x in range (1, 10):
     all_count_conv = 0
+    all_count_conv_fix = 0
     money = 0
+    money_fix = 0
+
     for v in range(1, 50):
         #генерируем стоимость позиций для ключа
         cost_pos[v][8] = round(random.uniform(1, 3), 2)
@@ -49,10 +55,10 @@ for x in range (1, 10):
                 break
 
         #максимальная позиция и стоимость клика для фиксированной ставки
-        cpc_fix = 0
+        cpc_fix = [0]*50
         for j in range(9):
             if cost_pos[v][j] <= base_cost_click:
-                cpc_fix = cost_pos[v][j]+0.01
+                cpc_fix[v] = cost_pos[v][j]+0.01
                 num_pos_fix = j
                 break
             
@@ -66,31 +72,57 @@ for x in range (1, 10):
         costs_per_key = traff_period * cpc[v]
 
         #расходы по ключу фикс
-        costs_per_key_fix = traff_period_fix * cpc_fix
+        costs_per_key_fix = traff_period_fix * cpc_fix[v]
 
-        #количество конверсий
+        #количество конверсий оптимизатора
         count_conv = round(traff_period * ver_conv[v], 0)
         all_count_conv += count_conv
 
+        #количество конверсий с фикс ставкой
+        count_conv_fix = round(traff_period_fix * ver_conv[v], 0)
+        all_count_conv_fix += count_conv_fix
+
         conv_cost = [0]*50
-        #стоимость конверсии по ключам
+        #стоимость конверсии по ключам с опитимизатором
         if count_conv != 0:
             conv_cost[v] = costs_per_key / count_conv
+
+        conv_cost_fix = [0]*50
+        #стоимость конверсии по ключам с фискированной ставкой
+        if count_conv != 0:
+            conv_cost_fix[v] = costs_per_key_fix / count_conv_fix
             
         #расходы за период
         money += costs_per_key
+        money_fix += costs_per_key_fix
         
-        ws.cell(row=v, column=11).value = cpc[v] 
-        ws.cell(row=v, column=12).value = num_pos
-        ws.cell(row=v, column=13).value = traff_period
-        ws.cell(row=v, column=14).value = costs_per_key
-        ws.cell(row=v, column=15).value = count_conv
-        ws.cell(row=v, column=16).value = conv_cost[v]
+        #фиксированная ставка 
+        ws.cell(row=v, column=11).value = cpc_fix[v]
+        ws.cell(row=v, column=12).value = num_pos_fix
+        ws.cell(row=v, column=13).value = traff_period_fix
+        ws.cell(row=v, column=14).value = costs_per_key_fix
+        ws.cell(row=v, column=15).value = count_conv_fix
+        ws.cell(row=v, column=16).value = conv_cost_fix[v]
+
+        #оптимизированная ставка
+        ws.cell(row=v, column=18).value = cpc[v]
+        ws.cell(row=v, column=19).value = num_pos
+        ws.cell(row=v, column=20).value = traff_period
+        ws.cell(row=v, column=21).value = costs_per_key
+        ws.cell(row=v, column=22).value = count_conv
+        ws.cell(row=v, column=23).value = conv_cost[v]
+
+
+    #считаем расходы и конверсии у фиксированной ставки
+    cost_conv_period_fix = money_fix / all_count_conv
+
+    #считаем расходы и конверсии у оптимизатора
+    cost_conv_period_ = money / all_count_conv
 
     #выставляем ставки
     for i in range(50):
         if (conv_cost[i] != 0) and (conv_cost[i] < money / all_count_conv):
-            cost_click[i] += 2
+            cost_click[i] += 100
             
             
 
