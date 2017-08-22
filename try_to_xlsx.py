@@ -9,12 +9,10 @@ ws = wb.active
 #количество траифка по позициям
 traffic = [1, 0.85, 0.75, 0.65, 0.06, 0.05, 0.04, 0.03, 0.02, 0, 0]
 
-<<<<<<< HEAD
+
 #целевая стоимость конверсии
 click_value = 650
 
-=======
->>>>>>> parent of d698773... Работающий оптимизатор v1
 #задаем вероятности конверсий и количетсво трафика ключам
 ver_conv = [0]*50
 amount_traff = [0]*50
@@ -23,14 +21,8 @@ for i in range(50):
     amount_traff[i] = random.randint(1, 100)
     
 cost_click = [20]*50 #массив ставок по ключам. начальная ставка 20 руб.
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> parent of d698773... Работающий оптимизатор v1
-base_cost_click = 25 #контрольная фиксированная ставка для всех ключей - 20 руб
-=======
 base_cost_click = 20 #контрольная фиксированная ставка для всех ключей - 20 руб
->>>>>>> parent of ac182db... бэк
+
 cost_pos = [[0]*9 for i in range(50)] #массив стоимости позиций
 all_count_conv = 0
 all_money = 0
@@ -111,78 +103,15 @@ for q in range(10):
             traff_period[v] = round(amount_traff[v] * traffic [num_pos], 0)
 
             #считаем количество трафика за период для фиксированной ставки
-<<<<<<< HEAD
-            traff_period_fix = int(round(amount_traff[v] * traffic [num_pos_fix], 0))
-=======
-for x in range (1, 10):
-    all_count_conv = 0
-    all_count_conv_fix = 0
-    money = 0
-    money_fix = 0
-    traff_period = [0]*50
-    for v in range(1, 50):
-        #генерируем стоимость позиций для ключа
-        cost_pos[v][8] = round(random.uniform(1, 3), 2)
-        cost_pos[v][7] = cost_pos[v][8] + round(random.uniform(0.5, 2), 2)
-        cost_pos[v][6] = cost_pos[v][7] + round(random.uniform(0.5, 2), 2)
-        cost_pos[v][5] = cost_pos[v][6] + round(random.uniform(0.5, 2), 2)
-        cost_pos[v][4] = cost_pos[v][5] + round(random.uniform(0.5, 3), 2)
-        cost_pos[v][3] = cost_pos[v][4] + round(random.uniform(4, 10), 2)
-        cost_pos[v][2] = cost_pos[v][3] + round(random.uniform(2, 10), 2)
-        cost_pos[v][1] = cost_pos[v][2] + round(random.uniform(1, 15), 2)
-        cost_pos[v][0] = cost_pos[v][1] + round(random.uniform(2, 10), 2)
-
-        #записываем в excel цены 
-        for i in range(1, 10):
-            ws.cell(row=v+u, column=i).value = cost_pos[v][i-1]
-
-        #ищем максимальную доступную позицию и стоимость клика для оптимизатора
-        cpc = [0]*50
-        for i in range(9):
-            if cost_pos[v][i] <= cost_click[v]:
-                cpc[v] = cost_pos[v][i]+0.01
-                num_pos = i
-                break
-
-        #максимальная позиция и стоимость клика для фиксированной ставки
-        cpc_fix = [0]*50
-        for j in range(9):
-            if cost_pos[v][j] <= base_cost_click:
-                cpc_fix[v] = cost_pos[v][j]+0.01
-                num_pos_fix = j
-                break
-            
-        #считаем количество трафика за период для оптимизатора
-        traff_period[v] = round(amount_traff[v] * traffic [num_pos], 0)
-=======
             traff_period_fix = round(amount_traff[v] * traffic [num_pos_fix], 0)
->>>>>>> parent of ac182db... бэк
-
-        #считаем количество трафика за период для фиксированной ставки
-        traff_period_fix = round(amount_traff[v] * traffic [num_pos_fix], 0)
->>>>>>> parent of d698773... Работающий оптимизатор v1
 
         #расходы по ключу оптимизатора
         costs_per_key[v] = traff_period[v] * cpc[v]
         full_costs_per_key[v] += costs_per_key[v]
 
-<<<<<<< HEAD
         #расходы по ключу фикс
         costs_per_key_fix = traff_period_fix * cpc_fix[v]
-
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of ac182db... бэк
-            #количество конверсий оптимизатора
-            count_conv[v] = round(traff_period[v] * ver_conv[v], 0)
-            all_count_conv += count_conv[v]
-            full_conv_per_key[v] += count_conv[v]
-
-            #количество конверсий с фикс ставкой
-            count_conv_fix = round(traff_period_fix * ver_conv[v], 0)
-            all_count_conv_fix += count_conv_fix
-=======
+                                         
         #количество конверсий оптимизатора
         count_conv[v] = round(traff_period[v] * ver_conv[v], 0)
         all_count_conv += count_conv[v]
@@ -191,68 +120,6 @@ for x in range (1, 10):
         #количество конверсий с фикс ставкой
         count_conv_fix = round(traff_period_fix * ver_conv[v], 0)
         all_count_conv_fix += count_conv_fix
->>>>>>> parent of d698773... Работающий оптимизатор v1
-=======
-for x in range (1, 10):
-    all_count_conv = 0
-    all_count_conv_fix = 0
-    money = 0
-    money_fix = 0
-    traff_period = [0]*50
-    for v in range(1, 50):
-        #генерируем стоимость позиций для ключа
-        cost_pos[v][8] = round(random.uniform(1, 3), 2)
-        cost_pos[v][7] = cost_pos[v][8] + round(random.uniform(0.5, 2), 2)
-        cost_pos[v][6] = cost_pos[v][7] + round(random.uniform(0.5, 2), 2)
-        cost_pos[v][5] = cost_pos[v][6] + round(random.uniform(0.5, 2), 2)
-        cost_pos[v][4] = cost_pos[v][5] + round(random.uniform(0.5, 3), 2)
-        cost_pos[v][3] = cost_pos[v][4] + round(random.uniform(4, 10), 2)
-        cost_pos[v][2] = cost_pos[v][3] + round(random.uniform(2, 10), 2)
-        cost_pos[v][1] = cost_pos[v][2] + round(random.uniform(1, 15), 2)
-        cost_pos[v][0] = cost_pos[v][1] + round(random.uniform(2, 10), 2)
-
-        #записываем в excel цены 
-        for i in range(1, 10):
-            ws.cell(row=v+u, column=i).value = cost_pos[v][i-1]
-
-        #ищем максимальную доступную позицию и стоимость клика для оптимизатора
-        cpc = [0]*50
-        for i in range(9):
-            if cost_pos[v][i] <= cost_click[v]:
-                cpc[v] = cost_pos[v][i]+0.01
-                num_pos = i
-                break
-
-        #максимальная позиция и стоимость клика для фиксированной ставки
-        cpc_fix = [0]*50
-        for j in range(9):
-            if cost_pos[v][j] <= base_cost_click:
-                cpc_fix[v] = cost_pos[v][j]+0.01
-                num_pos_fix = j
-                break
-            
-        #считаем количество трафика за период для оптимизатора
-        traff_period[v] = round(amount_traff[v] * traffic [num_pos], 0)
-
-        #считаем количество трафика за период для фиксированной ставки
-        traff_period_fix = round(amount_traff[v] * traffic [num_pos_fix], 0)
-
-        #расходы по ключу оптимизатора
-        costs_per_key[v] = traff_period[v] * cpc[v]
-        full_costs_per_key[v] += costs_per_key[v]
-
-        #расходы по ключу фикс
-        costs_per_key_fix = traff_period_fix * cpc_fix[v]
-
-        #количество конверсий оптимизатора
-        count_conv[v] = round(traff_period[v] * ver_conv[v], 0)
-        all_count_conv += count_conv[v]
-        full_conv_per_key[v] += count_conv[v]
-
-        #количество конверсий с фикс ставкой
-        count_conv_fix = round(traff_period_fix * ver_conv[v], 0)
-        all_count_conv_fix += count_conv_fix
->>>>>>> parent of d698773... Работающий оптимизатор v1
 
         conv_cost = [0]*50
         #стоимость конверсии по ключам с опитимизатором
@@ -376,14 +243,6 @@ for x in range (1, 10):
         u += 52
         l += 52           
 
-        '''
-            U = traff_period[i] * ver_conv[i]
-    
-            if U * cpc[i] < click_value:
-                cost_click[i] = cost_click[i] + cost_click[i]*0.1
-            else:
-                cost_click[i] = cost_click[i] - cost_click[i]*0.1'''
-               
 =======
         #расходы за период
         money += costs_per_key[v]
@@ -453,14 +312,6 @@ for x in range (1, 10):
     l += 52           
 
 
-#        U = traff_period[i] * ver_conv[i]
-#
-#        if U * cpc[i] < click_value:
-#            cost_click[i] = cost_click[i] + cost_click[i]*0.1
-#        else:
-#            cost_click[i] = cost_click[i] - cost_click[i]*0.1
-            
-            
 <<<<<<< HEAD
 >>>>>>> parent of d698773... Работающий оптимизатор v1
 =======
